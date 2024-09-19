@@ -1,3 +1,7 @@
+// URL do backend
+api_url = "http://localhost:3000";
+
+
 // Função de login
 document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -5,7 +9,7 @@ document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
     const senha = document.getElementById('senha').value;
 
     try {
-        const response = await fetch(`https://backend-provider.onrender.com/api/admin/login`, {
+        const response = await fetch(`${api_url}/api/admin/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -40,7 +44,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
         // Carregar chamados
         try {
-            const response = await fetch(`https://backend-provider.onrender.com/api/chamado`, {
+            const response = await fetch(`${api_url}/api/chamado`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -93,7 +97,7 @@ async function mudarStatus(id, cliente) {
     }
 
     try {
-        const response = await fetch(`https://backend-provider.onrender.com/api/chamado/${id}`, {
+        const response = await fetch(`${api_url}/api/chamado/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
