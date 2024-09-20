@@ -1,5 +1,5 @@
 // URL do backend
-api_url = "http://localhost:3000";
+api_url = "https://provider-backend.onrender.com";
 
 
 // Função de login
