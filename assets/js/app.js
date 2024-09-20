@@ -53,6 +53,7 @@ window.addEventListener('DOMContentLoaded', async () => {
             if (response.ok) {
                 const chamados = await response.json();
                 const chamadosAbertos = chamados.filter(p => p.status === 'aberto'); // Filtra apenas os chamados abertos
+                
 
                 // Ordenar os chamados por data de criação (mais antigo primeiro)
                 chamadosAbertos.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
@@ -88,12 +89,32 @@ window.addEventListener('DOMContentLoaded', async () => {
 
 // Função para mudar o status do chamado
 async function mudarStatus(id, cliente) {
-    const token = localStorage.getItem('token'); // Recupera o token do localStorage
+    const token = localStorage.getItem('token');
+    const statusAnterior = "aberto";
 
-    // Mostrar a caixa de confirmação com o nome do cliente
     const confirmacao = confirm(`Você tem certeza que deseja concluir o chamado do cliente ${cliente}?`);
     if (!confirmacao) {
-        return; // Se o usuário clicar em "Cancelar", não faz nada
+        return; 
+    }
+
+    const statusAtual = 'concluído';
+    const dataModificacao = new Date();
+
+    let localizacao = null;
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async (position) => {
+            localizacao = {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude
+            };
+            await enviarHistorico(id, statusAnterior, statusAtual, dataModificacao, localizacao);
+        }, async (error) => {
+            console.error('Erro ao obter a localização:', error);
+            await enviarHistorico(id, statusAnterior, statusAtual, dataModificacao, null);
+        });
+    } else {
+        console.error('Geolocalização não é suportada neste navegador');
+        await enviarHistorico(id, statusAnterior, statusAtual, dataModificacao, null);
     }
 
     try {
@@ -103,17 +124,46 @@ async function mudarStatus(id, cliente) {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify({ status: 'concluído' })
+            body: JSON.stringify({ status: statusAtual })
         });
 
         if (response.ok) {
             alert('Chamado concluído com sucesso!');
-            // Recarregar a lista de chamados
             window.location.reload();
         } else {
             console.error('Erro ao concluir chamado');
         }
     } catch (error) {
         console.error('Erro ao mudar o status do chamado:', error);
+    }
+}
+
+// Função para enviar o histórico do chamado
+async function enviarHistorico(chamadoId, statusAnterior, statusAtual, dataModificacao, localizacao) {
+    const token = localStorage.getItem('token');
+    const responsavelId = localStorage.getItem('id'); // ID do responsável, guardado no localStorage
+
+    try {
+        const response = await fetch(`${api_url}/api/historico`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+                chamadoId,
+                statusAnterior,
+                statusAtual,
+                dataModificacao,
+                localizacao,
+                responsavelId
+            })
+        });
+
+        if (!response.ok) {
+            console.error('Erro ao enviar histórico');
+        }
+    } catch (error) {
+        console.error('Erro ao enviar histórico:', error);
     }
 }
