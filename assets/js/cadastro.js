@@ -17,7 +17,7 @@ window.addEventListener('DOMContentLoaded', async () => {
             // Coletar dados do formulário
             const cliente = document.getElementById('cliente').value;
             const telefone = document.getElementById('telefone').value;
-            const categoriaId = document.getElementById('categoria').value;
+            const categoriaId = document.getElementById('categoria').value; // Aqui está correto
             const descricao = document.getElementById('descricao').value;
             
             // Verificar se os campos necessários estão preenchidos
@@ -27,7 +27,6 @@ window.addEventListener('DOMContentLoaded', async () => {
             }
             
             // Post Cadastro
-
             try {
                 const response = await fetch(`${api_url}/api/chamado`, {
                     method: 'POST',
@@ -35,7 +34,7 @@ window.addEventListener('DOMContentLoaded', async () => {
                         'Content-Type': 'application/json',
                         Authorization: `Bearer ${token}`,
                     },
-                    body: JSON.stringify({ cliente, telefone, categoria, descricao, responsavelId}),
+                    body: JSON.stringify({ cliente, telefone, categoria: categoriaId, descricao, responsavelId }), // Alterado para categoria: categoriaId
                 });
 
                 if (response.ok) {
