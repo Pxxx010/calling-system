@@ -60,19 +60,19 @@ window.addEventListener('DOMContentLoaded', async () => {
 
                 const chamadoslist = document.getElementById('chamadoslist');
                 chamadoslist.innerHTML = chamadosAbertos.map(p => `
-                    <div class="card chamado-card">
+                    <div class="card chamado-card" data-id="${p._id}">
                         <div class="card-header">
                             <strong>Cliente:</strong> ${p.cliente}
                         </div>
                         <div class="card-body">
                             <p><strong>Descrição:</strong> ${p.descricao}</p>
-                            <p><strong>Categoria:</strong> ${p.categoriaId}</p>
+                            <p><strong>Categoria:</strong> ${p.categoria}</p>
                             <p><strong>Status:</strong> <span class="status-label ${p.status}">${p.status}</span></p>
                             <p><strong>Data de criação:</strong> ${new Date(p.createdAt).toLocaleDateString()}</p>
-                            <button class="btn btn-primary" onclick="mudarStatus('${p._id}', '${p.cliente}')">Concluir</button>
+                            <button class="btn btn-primary ms-auto" onclick="mudarStatus('${p._id}', '${p.cliente}')">Concluir</button>
                         </div>
                     </div>
-                `).join('');
+                `).join('');                
             }
         } catch (error) {
             console.error('Erro ao carregar chamados:', error);

@@ -4,7 +4,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    margin: 0;
+    margin: 25px;
     background-color: #f4f4f4;
 }
 
@@ -13,7 +13,7 @@ body {
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
-    max-width: 400px; /* Limita a largura máxima do container */
+    max-width: 1000px; /* Limita a largura máxima do container */
     width: 100%; /* Garante que o container ocupe 100% da largura disponível */
 }
 
@@ -83,4 +83,26 @@ button:hover {
 
 .status-label.fechado {
     background-color: red;
+}
+
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Cria três colunas de tamanho igual */
+    gap: 10px;
+    padding: 20px;
+}
+
+.grid-container > div {
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Adiciona sombra ao redor dos itens */
+    background-color: #fff; /* Fundo branco para os cards */
+    border-radius: 5px; /* Cantos arredondados */
+    box-sizing: border-box; /* Garante que padding e borda são incluídos na largura total */
+}
+
+@media (max-width: 768px) {
+    .grid-container {
+        grid-template-columns: 1fr;
+    }
 }
