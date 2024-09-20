@@ -53,3 +53,6 @@ window.addEventListener('DOMContentLoaded', async () => {
         });
     }
 });
+
+
+// By Afonso Estevão Luna, mini sistema de chamados
