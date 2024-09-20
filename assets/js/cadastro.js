@@ -29,7 +29,7 @@ window.addEventListener('DOMContentLoaded', async () => {
             // Post Cadastro
 
             try {
-                const response = await fetch(`${url_api}/api/chamado`, {
+                const response = await fetch(`${api_url}/api/chamado`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
